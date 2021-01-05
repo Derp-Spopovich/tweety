@@ -32,7 +32,8 @@
 
         <div>
             @if (!empty($tweet->tweet_image))
-                <img src="{{asset('storage/' .$tweet->tweet_image)}}" alt="tweet image" id="tweetImage" class="mb-3">
+                {{-- <img src="{{asset('storage/' .$tweet->tweet_image)}}" alt="tweet image" id="tweetImage" class="mb-3"> --}}
+                <img src="{{url('/tweet_images/' .$tweet->tweet_image)}}" alt="tweet image" id="tweetImage" class="mb-3">
             @endif
         </div>
 

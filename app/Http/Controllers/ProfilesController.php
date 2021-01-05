@@ -85,13 +85,13 @@ class ProfilesController extends Controller
     {
         $this->authorize('edit', $user);  //calls the policy method edit ,if the user is the owner , he can edit
 
-       $attributes = request()->validate([
+        $attributes = request()->validate([
             'username' => ['required','string','max:255','alpha_dash',Rule::unique('users')->ignore($user)],
             'name' => 'required|string|max:255',
             'email' =>  ['required','string','email','max:255',Rule::unique('users')->ignore($user)],
             'bio' => 'string|max:255',
-            // 'password' => 'required|string|min:8|max:255|confirmed',  //see the user model password attribute for hashing the password
             'avatar' => ['image'],
+            // 'password' => 'required|string|min:8|max:255|confirmed',  //see the user model password attribute for hashing the password
             'background' => ['image']
         ]);
 
@@ -100,15 +100,50 @@ class ProfilesController extends Controller
         //     $attributes['avatar'] = request('avatar')->store('avatars');
         // }
 
+        // if (request('avatar')) {
+        //     //Get file with the extension
+        //     $fileNameWithExt = $request->file('avatar')->getClientOriginalName();
+        //     //Get just filename
+        //     $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+        //     //Get just extension
+        //     $extension = $request->file('avatar')->getClientOriginalExtension();
+        //     //Filename to store to make it unique para d ma delete if naay kaparihas ngan ang e upload
+        //     $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+        //     //upload image to public directory
+        //     $path = $request->file('avatar')->move(public_path('/avatars'), $fileNameToStore);
+        // }
+
+        // if (request('background')) {
+        //     //Get file with the extension
+        //     $fileNameWithExt = $request->file('background')->getClientOriginalName();
+        //     //Get just filename
+        //     $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+        //     //Get just extension
+        //     $extension = $request->file('background')->getClientOriginalExtension();
+        //     //Filename to store to make it unique para d ma delete if naay kaparihas ngan ang e upload
+        //     $fileNameToStoreBackGround = $fileName.'_'.time().'.'.$extension;
+        //     //upload image to public directory
+        //     $path = $request->file('background')->move(public_path('/backgrounds'), $fileNameToStoreBackGround);
+        // }
+
         if (request('avatar')) { 
-            $attributes['avatar'] = request('avatar')->store('avatars');
+            $attributes['avatar'] = request('avatar')->store('', ['disk' => 'avatars']);
         }
            
         if (request('background')) {
-            $attributes['background'] = request('background')->store('backgrounds');
+            $attributes['background'] = request('background')->store('', ['disk' => 'backgrounds']);
         }
+
         $user->update($attributes);
-        return redirect()->route('profile', [$user])->with('success', 'Profile successully updated');;
+
+        // $user->username = request()->input('username');
+        // $user->name = request()->input('name');
+        // $user->email = request()->input('email');
+        // $user->bio = request()->input('bio');
+        // $user->avatar = $fileNameToStore;
+        // $user->background = $fileNameToStoreBackGround;
+        // $user->update();
+        return redirect()->route('profile', [$user])->with('success', 'Profile successully updated');
     }
 
     /**
@@ -121,4 +156,31 @@ class ProfilesController extends Controller
     {
         //
     }
+
+    // public function avatar(Request $request, User $user)
+    // {
+    //     $this->authorize('edit', $user);
+
+    //     request()->validate([
+    //         'avatar' => ['image']
+    //     ]);
+
+    //     if (request('avatar')) {
+    //         //Get file with the extension
+    //         $fileNameWithExt = $request->file('avatar')->getClientOriginalName();
+    //         //Get just filename
+    //         $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+    //         //Get just extension
+    //         $extension = $request->file('avatar')->getClientOriginalExtension();
+    //         //Filename to store to make it unique para d ma delete if naay kaparihas ngan ang e upload
+    //         $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+    //         //upload image to public directory
+    //         $path = $request->file('avatar')->move(public_path('/avatars'), $fileNameToStore);
+    //     }
+
+    //     $user->avatar = $fileNameToStore;
+    //     $user->save();
+    //     return back()->with('success', 'avatar updated');
+    // }
+
 }

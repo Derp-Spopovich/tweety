@@ -60,7 +60,7 @@ class User extends Authenticatable
     public function getAvatarAttribute($value)
     {
         if ($value) {
-            return asset('storage/' . $value);  //return the profile avatar of the user
+            return asset('avatars/' . $value);  //return the profile avatar of the user
         } else{
             return asset('/images/default-avatar.jpg'); //else if no profile avatar return default avatar
         }
@@ -72,7 +72,7 @@ class User extends Authenticatable
     public function getbackgroundAttribute($value)
     {
         if ($value) {
-            return asset('storage/' . $value);  //return the profile avatar of the user
+            return asset('backgrounds/' . $value);  //return the profile avatar of the user
         } else{
             return asset('/images/default-profile-banner.jpg'); //else if no profile avatar return default avatar
         }

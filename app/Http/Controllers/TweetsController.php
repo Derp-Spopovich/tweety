@@ -47,12 +47,25 @@ class TweetsController extends Controller
             'tweet_image' => 'image'
         ]);
 
+        if ($request->hasFile('tweet_image')) {
+            //Get file with the extension
+            $fileNameWithExt = $request->file('tweet_image')->getClientOriginalName();
+            //Get just filename
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            //Get just extension
+            $extension = $request->file('tweet_image')->getClientOriginalExtension();
+            //Filename to store to make it unique para d ma delete if naay kaparihas ngan ang e upload
+            $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+            //upload image to public directory
+            $path = $request->file('tweet_image')->move(public_path('/tweet_images'), $fileNameToStore);
+        } else {
+            $fileNameToStore = null;
+        }
+
         $tweets = New Tweet;
         $tweets->user_id = auth()->user()->id;
         $tweets->body = request()->input('body');
-        if (request('tweet_image')) {
-            $tweets->tweet_image = request('tweet_image')->store('tweet_images');
-        }
+        $tweets->tweet_image = $fileNameToStore;
         $tweets->save();
 
         return redirect('/tweet')->with('success', 'Tweet added!');
