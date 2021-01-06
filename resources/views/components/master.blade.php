@@ -27,10 +27,10 @@
 </head>
 <body>
     <div id="app">
-        <section class="px-8 py-4 mb-6">
+        <section class="px-8 py-4">
             <header class="container mx-auto">
                 <h1>
-                    <img src="/images/logo.svg" alt="tweety logo">
+                    <img src="/images/hplogo.png" style="width:50px;margin-left:80px;" alt="tweety logo">
                 </h1>
             </header>
         </section>
